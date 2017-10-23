@@ -1,1 +1,0 @@
-ALTER  TABLE  staff_info  ADD UNIQUE INDEX  scannerGunId_index (scannerGunId) ;
