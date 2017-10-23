@@ -1,0 +1,36 @@
+# Version: v4.0.17020905
+server:
+  port: 8081
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://192.168.1.156:3306/iot?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC&allowMultiQueries=true&useSSL=true&verifyServerCertificate=false
+      username: kyee
+      password: kyeepass
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      filters: stat
+      maxActive: 200
+      initialSize: 10
+      maxWait: 60000
+      minIdle: 20
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: "select 1"
+      testWhileIdle: true
+      maxOpenPreparedStatements: 20
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      useGlobalDataSourceStat: true
+flyway:
+  out-of-order: true
+  enabled: false
+pushService:
+  host: tcp://192.168.1.156:1883
+  userName: admin
+  passWord: public
+  monitor: http://192.168.1.156:18083
+dataServer:
+  url: 192.168.1.161:8091
+info:
+  selfVersion: @project.version@

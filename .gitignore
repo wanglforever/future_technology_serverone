@@ -1,0 +1,10 @@
+/.mvn/
+/.settings/
+/target/
+/.classpath
+/.project
+/mvnw
+/mvnw.cmd
+/.idea/
+/websocket-example.iml
+/log/
