@@ -5,6 +5,6 @@
 /.project
 /mvnw
 /mvnw.cmd
-/.idea/
-/websocket-example.iml
+/ft.serverone.iml
 log/
+/.idea

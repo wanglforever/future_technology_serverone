@@ -1,4 +1,4 @@
-package com.future.technology.ft.serverone;
+package com.future.technology.serverone;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

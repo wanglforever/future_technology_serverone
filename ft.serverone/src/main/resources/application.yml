@@ -3,10 +3,10 @@ server:
 spring:
   datasource:
     druid:
-      url: jdbc:mysql://localhost:3306/iot?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC&allowMultiQueries=true&useSSL=true&verifyServerCertificate=false
-      username: ****
-      password: ****
-      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/udbs?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC&allowMultiQueries=true&useSSL=true&verifyServerCertificate=false
+      username: udbs
+      password: udbspass
+      driver-class-name: com.mysql.jdbc.Driver
       filters: stat
       maxActive: 200
       initialSize: 10
