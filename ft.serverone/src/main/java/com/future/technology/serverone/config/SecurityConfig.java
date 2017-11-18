@@ -1,6 +1,7 @@
 package com.future.technology.serverone.config;
 
 import com.future.technology.serverone.user.service.IUserService;
+import com.future.technology.serverone.utils.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * 安全管理配置类
@@ -21,13 +23,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private UserDetailsService userDetailsService;
+public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     private IUserService userService;
     @Autowired
-    private Md5PasswordEncoder md5PasswordEncoder;
+    private MyAuthenticationProvider myAuthenticationProvider;
 
     @Bean
     Md5PasswordEncoder md5PasswordEncoder() {
@@ -49,8 +49,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers(HttpMethod.GET, "/user").permitAll()
-                .anyRequest().authenticated();
+                .antMatchers(HttpMethod.GET, "/user").permitAll();
+//                .anyRequest().authenticated();
     }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(myAuthenticationProvider);
+
+    }
+
 }
 
