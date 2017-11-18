@@ -8,11 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * @author 周乐乐
- * 创建时间：2016年10月17日
- * 创建说明：用户登录Controller
- */
 @RestController
 public class UserController {
 
