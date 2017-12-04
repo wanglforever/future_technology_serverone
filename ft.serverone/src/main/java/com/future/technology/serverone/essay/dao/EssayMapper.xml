@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.future.technology.serverone.essay.dao.EssayMapper">
+
+    <insert id="saveEssay" parameterType="com.future.technology.serverone.essay.domain.Essay"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO essay(essay_title,catogory_id,status_id,essay_mktime,essay_modtime,essay_content)
+                VALUES (#{essay_title},#{catogory_id},#{status_id},#{essay_mktime},#{essay_modtime},#{essay_content})
+    </insert>
+
+    <delete id="deletEssay" parameterType="java.lang.Long">
+        DELETE FROM essay WHERE essay_id = #{essay_id}
+    </delete>
+
+    <delete id="batchDeleteEssay" parameterType="java.util.List">
+        delete from essay where essay_id in
+        <foreach item="essay_id" collection="list" open="(" separator="," close=")">
+            #{essay_id}
+        </foreach>
+    </delete>
+
+    <update id="editorEssay" parameterType="com.future.technology.serverone.essay.domain.Essay">
+        UPDATE essay SET essay_title = #{essay_title},
+                          catogory_id = #{catogory_id},
+                          status_id = #{status_id},
+                          essay_modtime = #{essay_modtime},
+                          essay_content = #{essay_content}
+    </update>
+
+    <update id="downline" parameterType="java.lang.Integer">
+        UPDATE essay SET status_id = #{status_id}
+        WHERE  essay_id = #{essay_id}
+    </update>
+
+    <select id="queryEssay" parameterType="com.future.technology.serverone.essay.domain.QueryInfo"
+            resultType="com.future.technology.serverone.essay.domain.EssayCustomer">
+        SELECT DISTINCT a.essay_id
+            , a.essay_title
+            , b.catogory_name
+            , c.status_name
+            , a.essay_mktime
+            , a.essay_content
+        FROM essay a
+        LEFT OUTER JOIN catogorydir b ON a.catogory_id = b.catogory_id
+        LEFT OUTER JOIN statusdir   c ON a.status_id   = c.status_id
+        <where>
+            <if test="catogory_id != null and catogory_id != ''">
+                AND a.catogory_id = #{catogory_id}
+            </if>
+            <if test="status_id != null and status_id != ''">
+                AND a.status_id = #{status_id}
+            </if>
+            <if test="essay_title != null and essay_title !=''">
+                AND a.essay_title = #{essay_title}
+            </if>
+            <if test="start_time != null and start_time !=''">
+                AND a.essay_mktime >= #{start_time}
+            </if>
+            <if test="end_time != null and end_time != ''">
+                AND a.essay_mktime &lt;= #{end_time}
+            </if>
+        </where>
+        limit ${startRecord},${endRecord}
+    </select>
+
+    <select id="getEssayByTitle" parameterType="java.lang.String" resultType="com.future.technology.serverone.essay.domain.Essay">
+        SELECT * FROM essay WHERE essay_title = #{essay_title}
+    </select>
+</mapper>

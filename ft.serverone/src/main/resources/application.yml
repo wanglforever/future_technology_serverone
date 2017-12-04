@@ -21,3 +21,5 @@ spring:
       testOnReturn: false
       poolPreparedStatements: true
       useGlobalDataSourceStat: true
+essay:
+  pictureLocation: D:\picture\
