@@ -25,10 +25,11 @@
                           status_id = #{status_id},
                           essay_modtime = #{essay_modtime},
                           essay_content = #{essay_content}
+        WHERE essay_id = #{essay_id}
     </update>
 
-    <update id="downline" parameterType="java.lang.Integer">
-        UPDATE essay SET status_id = #{status_id}
+    <update id="downline" parameterType="java.lang.Long">
+        UPDATE essay SET status_id = 1
         WHERE  essay_id = #{essay_id}
     </update>
 
@@ -60,7 +61,7 @@
                 AND a.essay_mktime &lt;= #{end_time}
             </if>
         </where>
-        limit ${startRecord},${endRecord}
+        limit ${offset},${offcount}
     </select>
 
     <select id="getEssayByTitle" parameterType="java.lang.String" resultType="com.future.technology.serverone.essay.domain.Essay">

@@ -22,7 +22,7 @@ public interface IEssayService {
 
     Response updateEssay(Essay essay);
 
-    Response downline(Integer essay_id);
+    Response downline(Long essay_id);
 
     Response<PageBean> queryEssay(QueryInfo queryInfo);
 

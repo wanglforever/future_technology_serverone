@@ -6,30 +6,29 @@ package com.future.technology.serverone.essay.domain;
 public class QueryInfo  {
     private String start_time;
     private String end_time;
-    private String catogory_id;
-    private String status_id;
+    private Integer catogory_id;
+    private Integer status_id;
     private String essay_title;
 
     private Integer currentPage = 1;
-    private Long startRecord;
-    private Long endRecord;
+    private Long offset;
+    private Long offcount;
 
-    public Long getStartRecord() {
-        return startRecord;
+    public Long getOffset() {
+        return offset;
     }
 
-    public void setStartRecord(Long startRecord) {
-        this.startRecord = startRecord;
+    public void setOffset(Long offset) {
+        this.offset = offset;
     }
 
-    public Long getEndRecord() {
-        return endRecord;
+    public Long getOffcount() {
+        return offcount;
     }
 
-    public void setEndRecord(Long endRecord) {
-        this.endRecord = endRecord;
+    public void setOffcount(Long offcount) {
+        this.offcount = offcount;
     }
-
 
     public Integer getCurrentPage() {
         return currentPage;
@@ -55,20 +54,20 @@ public class QueryInfo  {
         this.end_time = end_time;
     }
 
-    public String getCatogory_id() {
+    public Integer getCatogory_id() {
         return catogory_id;
     }
 
-    public void setCatogory_id(String catogory_id) {
-        this.catogory_id = catogory_id;
-    }
-
-    public String getStatus_id() {
+    public Integer getStatus_id() {
         return status_id;
     }
 
-    public void setStatus_id(String status_id) {
+    public void setStatus_id(Integer status_id) {
         this.status_id = status_id;
+    }
+
+    public void setCatogory_id(Integer catogory_id) {
+        this.catogory_id = catogory_id;
     }
 
     public String getEssay_title() {

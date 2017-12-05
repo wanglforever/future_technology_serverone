@@ -23,7 +23,7 @@ public interface EssayMapper {
 
     int editorEssay(Essay essay);
 
-    int downline(Integer essay_id);
+    int downline(Long essay_id);
 
     List<EssayCustomer> queryEssay(QueryInfo queryInfo);
 }

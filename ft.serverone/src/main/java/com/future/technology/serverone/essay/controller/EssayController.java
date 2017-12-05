@@ -5,14 +5,8 @@ import com.future.technology.serverone.essay.domain.Essay;
 import com.future.technology.serverone.essay.domain.PageBean;
 import com.future.technology.serverone.essay.domain.QueryInfo;
 import com.future.technology.serverone.essay.service.IEssayService;
-import com.future.technology.serverone.utils.GetDateUtil;
-import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
@@ -24,44 +18,38 @@ public class EssayController {
     private IEssayService essayService;
 
     // 新增文章内容
-    @GetMapping("/essay_save")
-    public Response essaySave(Essay essay) {
-        Response<String> response = essayService.saveEssay(essay);
-        return response;
+    @PostMapping(value = "/essay/save", produces = "application/json; charset=utf-8")
+    public Response essaySave(@RequestBody Essay essay) {
+        return essayService.saveEssay(essay);
     }
 
     // 删除文章
-    @GetMapping("/essay_delete")
-    public Response deleteEssay(@RequestParam(value = "id") String id) {
-        return essayService.deletEssay(Long.valueOf(id));
+    @DeleteMapping(value = "/essay/delete" ,produces = "application/json; charset=utf-8")
+    public Response deleteEssay(@RequestParam Long id ) {
+        return essayService.deletEssay(id);
     }
 
     // 批量删除文章
-    @GetMapping("/essay_bath_delete")
-    public Response batchDeleteEssay(@RequestParam(value = "id") String id) {
-        String[] idArray = id.split(",");
-        List<Long> idList = new ArrayList<>();
-        for (int i = 0; i < idArray.length; i++) {
-            idList.add(Long.valueOf(idArray[i]));
-        }
+    @DeleteMapping(value = "/essay/bathDelete", produces = "application/json; charset=utf-8")
+    public Response batchDeleteEssay(@RequestParam List<Long> idList) {
         return essayService.batchDeleteEssay(idList);
     }
 
     // 编辑文章
-    @GetMapping("/essay_editor")
-    public Response editorEssay(Essay essay) {
+    @PutMapping(value = "/essay/editor",produces = "application/json; charset=utf-8")
+    public Response editorEssay(@RequestBody Essay essay) {
         return essayService.updateEssay(essay);
     }
 
     // 文章下线
-    @GetMapping("/essay_downline")
-    public Response downLine(@RequestParam(value = "status_id") String status_id) {
-        return essayService.downline(Integer.valueOf(status_id));
+    @PutMapping(value = "/essay/downline", produces = "application/json; charset=utf-8")
+    public Response downLine(@RequestParam Long id) {
+        return essayService.downline(id);
     }
 
     // 查询文章
-    @GetMapping("/essay_query")
-    public Response<PageBean> queryEssay(QueryInfo queryInfo){
+    @PostMapping(value = "/essay/query",produces = "application/json; charset=utf-8")
+    public Response<PageBean> queryEssay(@RequestBody QueryInfo queryInfo){
         return essayService.queryEssay(queryInfo);
     }
 }

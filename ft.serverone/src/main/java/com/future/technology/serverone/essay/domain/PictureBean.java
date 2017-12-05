@@ -10,7 +10,11 @@ public class PictureBean {
     // 默认是0，上传成功
     private Integer errno = new Integer(0);
     // 存放图片地址的容器
-    private List<String> picList = new ArrayList();
+    private List<String> data = new ArrayList();
+    public PictureBean(){}
+    public PictureBean(Integer errno) {
+        this.errno = errno;
+    }
 
     public Integer getErrno() {
         return errno;
@@ -20,11 +24,11 @@ public class PictureBean {
         this.errno = errno;
     }
 
-    public List<String> getPicList() {
-        return picList;
+    public List<String> getData() {
+        return data;
     }
 
-    public void setPicList(List<String> picList) {
-        this.picList = picList;
+    public void setData(List<String> data) {
+        this.data = data;
     }
 }

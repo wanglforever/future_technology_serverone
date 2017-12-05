@@ -1,13 +1,11 @@
 package com.future.technology.serverone.essay.service;
 
-import com.future.technology.serverone.common.EssayStatus;
-import com.future.technology.serverone.common.Response;
-import com.future.technology.serverone.common.ResponseStatus;
 import com.future.technology.serverone.essay.domain.PictureBean;
 import com.future.technology.serverone.utils.GetDateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -18,31 +16,40 @@ import java.io.IOException;
  */
 @Service
 @Slf4j
+@Transactional
 public class PictureService implements IPictureService {
+
     @Value("${essay.pictureLocation}")
     private String pictureLocation;
     @Override
-    public Response<PictureBean> imgUpload(MultipartFile file) {
+    public PictureBean imgUpload(MultipartFile[] fileArray) {
+        if (fileArray == null )
+            return new PictureBean(1);
+        if(fileArray.length == 0)
+            return new PictureBean(1);
+
         PictureBean pictureBean = new PictureBean();
-        String fileName = file.getOriginalFilename();
-        String suffixName = fileName.substring(fileName.lastIndexOf("."));
-        // 命名格式20171204152038_img.ong
-        fileName = GetDateUtil.suffixDateFormat()+ "_" + suffixName;
-        File dest = new File(pictureLocation + fileName);
-        // 检测是否存在目录
-        if (!dest.getParentFile().exists()) {
-            dest.getParentFile().mkdirs();
+        for (int i = 0; i < fileArray.length; i++) {
+            MultipartFile file =  fileArray[i];
+            String fileName = file.getOriginalFilename();
+            // 命名格式20171204152038_img.png
+            fileName = GetDateUtil.suffixDateFormat()+ "_" + fileName;
+            File dest = new File(pictureLocation + fileName);
+            // 检测是否存在目录
+            if (!dest.getParentFile().exists()) {
+                dest.getParentFile().mkdirs();
+            }
+            try {
+                file.transferTo(dest);
+                pictureBean.getData().add(pictureLocation + fileName);
+            } catch (IllegalStateException e) {
+                log.error("erro,{}",e);
+                pictureBean.setErrno(1);
+            }  catch (IOException e) {
+                pictureBean.setErrno(1);
+                log.error("erro,{}",e);
+            }
         }
-        try {
-            file.transferTo(dest);
-            pictureBean.getPicList().add(pictureLocation + fileName);
-            return new Response<PictureBean>(ResponseStatus.SUCCESS, EssayStatus.PICTURECOD_500,EssayStatus.PICTUREMES_501, pictureBean);
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        }  catch (IOException e) {
-            e.printStackTrace();
-        }
-        pictureBean.setErrno(1);
-        return new Response<PictureBean>(ResponseStatus.FAIL,EssayStatus.PICTURECOD_500,EssayStatus.PICTUREMES_502, pictureBean);
+        return pictureBean;
     }
 }

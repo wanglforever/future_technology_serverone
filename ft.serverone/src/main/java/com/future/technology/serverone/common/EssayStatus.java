@@ -4,11 +4,11 @@ package com.future.technology.serverone.common;
  * Created by three on 2017/12/1.
  */
 public class EssayStatus {
-    public final static String ESSAYCOD_100 = "100";
-    public final static String ESSAYCOD_200 = "200";
-    public final static String ESSAYCOD_300 = "300";
-    public final static String ESSAYCOD_400 = "400";
-    public final static String PICTURECOD_500 = "500";
+    public final static String ESSAYCOD_100 = "_s_001";
+    public final static String ESSAYCOD_200 = "_d_002";
+    public final static String ESSAYCOD_300 = "_u_003";
+    public final static String ESSAYCOD_400 = "_q_004";
+    public final static String PICTURECOD_500 = "_p_005";
     public final static String ESSAYMES_101 = "新增成功";
     public final static String ESSAYMES_102 = "新增失败";
     public final static String ESSAYMES_103 = "新增出错";
@@ -31,9 +31,4 @@ public class EssayStatus {
     public final static String ESSAYMES_402 = "查询为空";
     public final static String ESSAYMES_403 = "查询出错";
     public final static String ESSAYMES_404 = "索引为空";
-    public final static String PICTUREMES_501 = "上传图片成功";
-    public final static String PICTUREMES_502 = "上传图片失败";
-    public final static String PICTUREMES_503 = "上传图片出错";
-    public final static String PICTUREMES_505 = "上传图片为空";
-
 }
