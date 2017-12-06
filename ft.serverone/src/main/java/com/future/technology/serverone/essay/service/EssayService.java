@@ -1,17 +1,19 @@
 package com.future.technology.serverone.essay.service;
 
+import com.future.technology.serverone.common.BannerStatus;
 import com.future.technology.serverone.common.EssayStatus;
 import com.future.technology.serverone.common.Response;
 import com.future.technology.serverone.common.ResponseStatus;
 import com.future.technology.serverone.essay.dao.EssayMapper;
 import com.future.technology.serverone.essay.domain.Essay;
 import com.future.technology.serverone.essay.domain.EssayCustomer;
-import com.future.technology.serverone.essay.domain.PageBean;
 import com.future.technology.serverone.essay.domain.QueryInfo;
 import com.future.technology.serverone.utils.GetDateUtil;
+import com.future.technology.serverone.utils.PageBean;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,6 +22,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
+@Transactional
 public class EssayService implements IEssayService {
 
     @Autowired
@@ -27,6 +30,8 @@ public class EssayService implements IEssayService {
 
     @Override
     public Response<String> saveEssay(Essay essay) {
+        if (essay == null)
+            return new Response<>(ResponseStatus.SUCCESS, EssayStatus.ESSAYCOD_100, EssayStatus.ESSAYMES_102);
         if (essay.getEssay_title() != null &&
                 !essay.getEssay_title().trim().equals("") &&
                 essayMapper.getEssayByTitle(essay.getEssay_title()) == null) {
@@ -40,12 +45,13 @@ public class EssayService implements IEssayService {
                 essay.setStatus_id(0);
             try {
                 int record = essayMapper.saveEssay(essay);
-                if (record == 1) {
+                if (record > 0) {
                     return new Response<>(ResponseStatus.SUCCESS, EssayStatus.ESSAYCOD_100, EssayStatus.ESSAYMES_101);
                 } else {
                     return new Response<>(ResponseStatus.FAIL, EssayStatus.ESSAYCOD_100, EssayStatus.ESSAYMES_102);
                 }
             } catch (Exception excp) {
+                log.error("erro,{}",excp);
                 return new Response<>(ResponseStatus.ERROR, EssayStatus.ESSAYCOD_100, EssayStatus.ESSAYMES_103);
             }
         } else if (essay.getEssay_title() != null &&
@@ -58,26 +64,28 @@ public class EssayService implements IEssayService {
 
     @Override
     public Response deletEssay(Long essay_id) {
-        if (essay_id != null && essay_id != 0) {
+        if (essay_id == null)
+            return new Response(ResponseStatus.FAIL, EssayStatus.ESSAYCOD_200, EssayStatus.ESSAYMES_205);
+        if (essay_id != 0) {
             try {
                 int record = essayMapper.deletEssay(essay_id);
-                if (record == 1) {
+                if (record > 0) {
                     return new Response(ResponseStatus.SUCCESS, EssayStatus.ESSAYCOD_200, EssayStatus.ESSAYMES_201);
                 } else {
                     return new Response(ResponseStatus.FAIL, EssayStatus.ESSAYCOD_200, EssayStatus.ESSAYMES_202);
                 }
             } catch (Exception excp) {
+                log.error("erro,{}",excp);
                 return new Response(ResponseStatus.ERROR, EssayStatus.ESSAYCOD_200, EssayStatus.ESSAYMES_203);
             }
         } else {
             return new Response(ResponseStatus.FAIL, EssayStatus.ESSAYCOD_200, EssayStatus.ESSAYMES_205);
         }
-
     }
 
     @Override
     public Response batchDeleteEssay(List<Long> list) {
-        if (list != null || list.size() != 0) {
+        if (list != null && list.size() > 0) {
             try {
                 int size = list.size();
                 if (size == essayMapper.batchDeleteEssay(list)) {
@@ -86,6 +94,7 @@ public class EssayService implements IEssayService {
                     return new Response(ResponseStatus.FAIL, EssayStatus.ESSAYCOD_200, EssayStatus.ESSAYMES_202);
                 }
             } catch (Exception excp) {
+                log.error("erro,{}",excp);
                 return new Response(ResponseStatus.ERROR, EssayStatus.ESSAYCOD_200, EssayStatus.ESSAYMES_203);
             }
         } else {
@@ -99,13 +108,16 @@ public class EssayService implements IEssayService {
                 essay.getEssay_content() != null && !essay.getEssay_content().trim().equals("")) {
             try {
                 String date = GetDateUtil.getDate();
+                Essay essayprevious = essayMapper.queryEssayById(essay.getEssay_id());
+                essay.setEssay_mktime(essayprevious.getEssay_mktime());
                 essay.setEssay_modtime(date);
-                if (1 == essayMapper.editorEssay(essay)) {
+                if (0 < essayMapper.editorEssay(essay)) {
                     return new Response(ResponseStatus.SUCCESS, EssayStatus.ESSAYCOD_300, EssayStatus.ESSAYMES_301);
                 } else {
                     return new Response(ResponseStatus.FAIL, EssayStatus.ESSAYCOD_300, EssayStatus.ESSAYMES_302);
                 }
             } catch (Exception excp) {
+                log.error("erro,{}",excp);
                 return new Response(ResponseStatus.ERROR, EssayStatus.ESSAYCOD_300, EssayStatus.ESSAYMES_303);
             }
         } else if (essay.getEssay_title() != null && essay.getEssay_title().trim().equals("")) {
@@ -116,32 +128,40 @@ public class EssayService implements IEssayService {
     }
 
     @Override
-    public Response downline(Integer essay_id) {
-        if (essay_id != null) {
-            try {
-                if (1 == essayMapper.downline(essay_id)) {
-                    return new Response(ResponseStatus.SUCCESS, EssayStatus.ESSAYCOD_300, EssayStatus.ESSAYMES_304);
-                } else {
-                    return new Response(ResponseStatus.FAIL, EssayStatus.ESSAYCOD_300, EssayStatus.ESSAYMES_305);
-                }
-            } catch (Exception excp) {
-                return new Response(ResponseStatus.ERROR, EssayStatus.ESSAYCOD_300, EssayStatus.ESSAYMES_306);
-            }
+    public Response downline(Long essay_id) {
+        if (essay_id == null)
+            return new Response(ResponseStatus.FAIL, EssayStatus.ESSAYCOD_300, EssayStatus.ESSAYMES_302);
+        Essay essay = essayMapper.queryEssayById(essay_id);
+        if(essay == null)
+            return new Response(ResponseStatus.FAIL, EssayStatus.ESSAYCOD_300, EssayStatus.ESSAYMES_302);
+
+        int record;
+        if (essay.getStatus_id() == 0) {
+            essay.setStatus_id(1);
+            essay.setEssay_modtime(GetDateUtil.getDate());
+            record = essayMapper.downline(essay);
         }else {
-            return new Response(ResponseStatus.FAIL, EssayStatus.ESSAYCOD_300, EssayStatus.ESSAYMES_309);
+            essay.setStatus_id(0);
+            essay.setEssay_modtime(GetDateUtil.getDate());
+            record = essayMapper.downline(essay);
         }
+        if(record > 0)
+            return new Response(ResponseStatus.SUCCESS, EssayStatus.ESSAYCOD_300, EssayStatus.ESSAYMES_301);
+        return new Response(ResponseStatus.FAIL, EssayStatus.ESSAYCOD_300, EssayStatus.ESSAYMES_302);
+
     }
 
     @Override
     public Response<PageBean> queryEssay(QueryInfo queryInfo) {
         if (queryInfo != null) {
             try {
-                PageBean pageBean = new PageBean();
-                queryInfo.setStartRecord((pageBean.getCurrentPage()-1) * pageBean.getCurrentCount() * 1l);
-                queryInfo.setEndRecord(pageBean.getCurrentCount() * 1l);
+                PageBean<EssayCustomer> pageBean = new PageBean();
+                queryInfo.setOffset((pageBean.getCurrentPage()-1) * pageBean.getCurrentCount() * 1l);
+                queryInfo.setOffcount(pageBean.getCurrentCount() * 1l);
                 List<EssayCustomer> essays = essayMapper.queryEssay(queryInfo);
 
-                if (essays != null &&essays.size() != 0) {
+                if (essays != null &&essays.size() > 0) {
+                    pageBean.setCurrentPage(queryInfo.getCurrentPage());
                     pageBean.setTotalCount(essays.size());
                     pageBean.setTotalPage((int) Math.ceil(essays.size() * 1.0 / pageBean.getCurrentCount()));
                     pageBean.setInfoList(essays);
@@ -150,6 +170,7 @@ public class EssayService implements IEssayService {
                     return new Response<>(ResponseStatus.FAIL, EssayStatus.ESSAYCOD_400, EssayStatus.ESSAYMES_402);
                 }
             } catch (Exception excp) {
+                log.error("erro,{}",excp);
                 return new Response<>(ResponseStatus.ERROR, EssayStatus.ESSAYCOD_400, EssayStatus.ESSAYMES_403);
             }
         } else {

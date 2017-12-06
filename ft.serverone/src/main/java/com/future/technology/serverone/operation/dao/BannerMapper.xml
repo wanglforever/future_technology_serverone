@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.future.technology.serverone.operation.dao.BannerMapper">
+
+    <insert id="saveBanner" parameterType="com.future.technology.serverone.operation.domain.Banner"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO banner(banner_name,banner_description,banner_source,ref_address,bposition_id,bstatus_id,banner_mktime,banner_modtime)
+        VALUES (#{banner_name},#{banner_description},#{banner_source},#{ref_address},#{bposition_id},#{bstatus_id},#{banner_mktime},#{banner_modtime})
+    </insert>
+
+    <delete id="deleteBanner" parameterType="java.lang.Long">
+        DELETE FROM  banner WHERE banner_id = #{bannerId}
+    </delete>
+
+    <delete id="bathDeleteBanner" parameterType="java.util.List">
+        delete from banner where banner_id in
+        <foreach item="idItem" collection="list" open="(" separator="," close=")">
+            #{idItem}
+        </foreach>
+    </delete>
+
+    <update id="editorBanner" parameterType="com.future.technology.serverone.operation.domain.Banner">
+        UPDATE banner SET banner_name = #{banner_name},
+        banner_description = #{banner_description},
+        banner_source = #{banner_source},
+        ref_address = #{ref_address},
+        bposition_id = #{bposition_id},
+        bstatus_id = #{bstatus_id},
+        banner_mktime = #{banner_mktime},
+        banner_modtime = #{banner_modtime}
+        WHERE banner_id = #{banner_id}
+    </update>
+
+    <update id="editorBannerLine" parameterType="com.future.technology.serverone.operation.domain.Banner">
+        UPDATE banner SET bstatus_id = #{bstatus_id}
+        WHERE  banner_id = #{banner_id}
+    </update>
+
+    <select id="queryBanner" parameterType="com.future.technology.serverone.operation.domain.BQueryInfo"
+            resultType="com.future.technology.serverone.operation.domain.BCustomer">
+        SELECT DISTINCT a.banner_id
+        , a.banner_name
+        , a.banner_description
+        , a.banner_source
+        , a.ref_address
+        , b.bposition_name
+        , c.bstatus_name
+        , a.banner_mktime
+        , a.banner_modtime
+        FROM banner a
+        LEFT OUTER JOIN bpositiondir b ON a.bposition_id = b.bposition_id
+        LEFT OUTER JOIN bstatusdir c ON a.bstatus_id = c.bstatus_id
+        <where>
+            <if test="bTitle != null and bTitle != ''">
+                AND a.banner_name = #{bTitle}
+            </if>
+            <if test="bStatus != null and bStatus != ''">
+                AND a.bstatus_id = #{bStatus}
+            </if>
+            <if test=" bStartTime != null and bStartTime !=''">
+                AND a.banner_mktime >= #{bStartTime}
+            </if>
+            <if test="bEndTime != null and bEndTime != ''">
+                AND a.banner_mktime &lt;= #{bEndTime}
+            </if>
+        </where>
+        limit ${offset},${offcount}
+    </select>
+
+    <select id="queryBannerByTitle" parameterType="java.lang.String" resultType="com.future.technology.serverone.operation.domain.Banner">
+        SELECT * FROM banner WHERE banner_name = #{banner_name}
+    </select>
+    <select id="queryBannerById" parameterType="java.lang.Long" resultType="com.future.technology.serverone.operation.domain.Banner">
+        SELECT * FROM banner WHERE banner_id = #{banner_id}
+    </select>
+</mapper>

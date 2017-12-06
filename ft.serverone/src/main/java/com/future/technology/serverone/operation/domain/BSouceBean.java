@@ -1,20 +1,14 @@
-package com.future.technology.serverone.essay.domain;
+package com.future.technology.serverone.operation.domain;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by three on 2017/12/4.
+ * Created by three on 2017/12/5.
  */
-public class PictureBean {
-    // 默认是0，上传成功
+public class BSouceBean{
     private Integer errno = new Integer(0);
-    // 存放图片地址的容器
-    private List<String> data = new ArrayList();
-    public PictureBean(){}
-    public PictureBean(Integer errno) {
-        this.errno = errno;
-    }
+    private List<String> data = new ArrayList<>();
 
     public Integer getErrno() {
         return errno;
@@ -30,5 +24,10 @@ public class PictureBean {
 
     public void setData(List<String> data) {
         this.data = data;
+    }
+
+    public BSouceBean(){}
+    public BSouceBean(Integer errno) {
+        this.errno = errno;
     }
 }
