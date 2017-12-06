@@ -23,3 +23,5 @@ spring:
       useGlobalDataSourceStat: true
 essay:
   pictureLocation: D:\picture\
+operation:
+  sourceLocation: D:\sources\

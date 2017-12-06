@@ -1,4 +1,4 @@
-package com.future.technology.serverone.essay.domain;
+package com.future.technology.serverone.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by three on 2017/12/3.
  */
-public class PageBean {
+public class PageBean<T> {
 
     //当前页
     private Integer currentPage = 1;
@@ -17,7 +17,7 @@ public class PageBean {
     //总页数
     private Integer totalPage;
     //每页显示的数据
-    private List<EssayCustomer> infoList = new ArrayList<EssayCustomer>();
+    private List<T> infoList = new ArrayList<T>();
 
     public Integer getCurrentPage() {
         return currentPage;
@@ -51,11 +51,11 @@ public class PageBean {
         this.totalPage = totalPage;
     }
 
-    public List<EssayCustomer> getInfoList() {
+    public List<T> getInfoList() {
         return infoList;
     }
 
-    public void setInfoList(List<EssayCustomer> infoList) {
+    public void setInfoList(List<T> infoList) {
         this.infoList = infoList;
     }
 }

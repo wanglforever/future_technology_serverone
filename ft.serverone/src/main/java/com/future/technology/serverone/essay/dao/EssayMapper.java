@@ -1,9 +1,7 @@
 package com.future.technology.serverone.essay.dao;
 
-import com.future.technology.serverone.common.Response;
 import com.future.technology.serverone.essay.domain.Essay;
 import com.future.technology.serverone.essay.domain.EssayCustomer;
-import com.future.technology.serverone.essay.domain.PageBean;
 import com.future.technology.serverone.essay.domain.QueryInfo;
 
 import java.util.List;
@@ -23,7 +21,9 @@ public interface EssayMapper {
 
     int editorEssay(Essay essay);
 
-    int downline(Long essay_id);
+    int downline(Essay essay);
 
     List<EssayCustomer> queryEssay(QueryInfo queryInfo);
+
+    Essay queryEssayById(Long essay_id);
 }

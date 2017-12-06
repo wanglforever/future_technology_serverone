@@ -2,10 +2,8 @@ package com.future.technology.serverone.essay.service;
 
 import com.future.technology.serverone.common.Response;
 import com.future.technology.serverone.essay.domain.Essay;
-import com.future.technology.serverone.essay.domain.PageBean;
 import com.future.technology.serverone.essay.domain.QueryInfo;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import com.future.technology.serverone.utils.PageBean;
 
 import java.util.List;
 

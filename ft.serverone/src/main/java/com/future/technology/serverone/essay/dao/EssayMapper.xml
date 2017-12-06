@@ -28,8 +28,9 @@
         WHERE essay_id = #{essay_id}
     </update>
 
-    <update id="downline" parameterType="java.lang.Long">
-        UPDATE essay SET status_id = 1
+    <update id="downline" parameterType="com.future.technology.serverone.essay.domain.Essay">
+        UPDATE essay SET status_id = #{status_id},
+                          essay_modtime = #{essay_modtime}
         WHERE  essay_id = #{essay_id}
     </update>
 
@@ -66,5 +67,9 @@
 
     <select id="getEssayByTitle" parameterType="java.lang.String" resultType="com.future.technology.serverone.essay.domain.Essay">
         SELECT * FROM essay WHERE essay_title = #{essay_title}
+    </select>
+
+    <select id="queryEssayById" parameterType="java.lang.Long" resultType="com.future.technology.serverone.essay.domain.Essay">
+        SELECT * FROM essay WHERE essay_id = #{essay_id}
     </select>
 </mapper>

@@ -2,9 +2,9 @@ package com.future.technology.serverone.essay.controller;
 
 import com.future.technology.serverone.common.Response;
 import com.future.technology.serverone.essay.domain.Essay;
-import com.future.technology.serverone.essay.domain.PageBean;
 import com.future.technology.serverone.essay.domain.QueryInfo;
 import com.future.technology.serverone.essay.service.IEssayService;
+import com.future.technology.serverone.utils.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;

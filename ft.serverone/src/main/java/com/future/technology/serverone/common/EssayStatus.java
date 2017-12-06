@@ -8,7 +8,6 @@ public class EssayStatus {
     public final static String ESSAYCOD_200 = "_d_002";
     public final static String ESSAYCOD_300 = "_u_003";
     public final static String ESSAYCOD_400 = "_q_004";
-    public final static String PICTURECOD_500 = "_p_005";
     public final static String ESSAYMES_101 = "新增成功";
     public final static String ESSAYMES_102 = "新增失败";
     public final static String ESSAYMES_103 = "新增出错";

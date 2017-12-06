@@ -16,7 +16,7 @@ public class PictureController {
     @Autowired
     private IPictureService pictureService;
 
-    @PostMapping("/upload" )
+    @PostMapping("/essay/upload" )
     public PictureBean imgUpload(@RequestParam(value = "file") MultipartFile[] file) {
         return pictureService.imgUpload(file);
     }
