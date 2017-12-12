@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.future.technology.serverone.user.dao.IUserInfoDao">
-    <select id="queryUserByUsername" resultType="com.future.technology.serverone.user.domain.User">
-        SELECT
-        userName,
-        password
-        FROM account_user
-        WHERE userName = #{userName}
-    </select>
+<insert id="addAccount" parameterType="com.future.technology.serverone.user.domain.User">
+    INSERT INTO account_user
+    (accountName,password,username,accountRole,accountSex,accountBirthday,
+    accountGraduatedSchool,accountProfession,accountGraduatedTime,
+    accountEducation,accountAddress,accountEmail,accountQQNum,accountPhone)
+    VALUES
+    (
+    #{user.accountName},
+    #{user.password},
+    #{user.username},
+    #{user.accountRole},
+    #{user.accountSex},
+    #{user.accountBirthday},
+    #{user.accountGraduatedSchool},
+    #{user.accountProfession},
+    #{user.accountGraduatedTime},
+    #{user.accountEducation},
+    #{user.accountAddress},
+    #{user.accountEmail},
+    #{user.accountQQNum},
+    #{user.accountPhone}
+    )
+</insert>
 </mapper>
