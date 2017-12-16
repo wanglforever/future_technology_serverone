@@ -77,4 +77,8 @@
     <select id="queryBannerById" parameterType="java.lang.Long" resultType="com.future.technology.serverone.operation.domain.Banner">
         SELECT * FROM banner WHERE banner_id = #{banner_id}
     </select>
+
+    <select id="queryOtherBanners" parameterType="java.lang.Long" resultType="com.future.technology.serverone.operation.domain.Banner">
+        SELECT * FROM  banner WHERE banner_id != #{banner_id}
+    </select>
 </mapper>

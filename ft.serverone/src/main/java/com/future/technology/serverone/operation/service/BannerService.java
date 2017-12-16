@@ -78,9 +78,12 @@ public class BannerService implements IBannerService {
         if (StringUtils.isEmpty(banner.getBanner_content()))
             return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_SAVE, BannerStatus.BANNERMSG_S018);
         Banner bannerprevious = bannerMapper.queryBannerById(banner.getBanner_id());
-        List<Banner> banners = bannerMapper.queryBannerByTitle(banner.getBanner_name());
-        if(banners!= null && banners.size() >1)
-            return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_EDITOR, BannerStatus.BANNERMSG_S015);
+        List<Banner> banners = bannerMapper.queryOtherBanners(banner.getBanner_id());
+        for (int i = 0; i < banners.size(); i++) {
+            Banner otherBanner =  banners.get(i);
+            if(otherBanner.getBanner_name() == banner.getBanner_name())
+                return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_EDITOR, BannerStatus.BANNERMSG_S015);
+        }
         banner.setBanner_modtime(GetDateUtil.getDate());
         banner.setBanner_mktime(bannerprevious.getBanner_mktime());
         int record = bannerMapper.editorBanner(banner);

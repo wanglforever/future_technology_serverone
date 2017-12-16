@@ -72,4 +72,8 @@
     <select id="queryEssayById" parameterType="java.lang.Long" resultType="com.future.technology.serverone.essay.domain.Essay">
         SELECT * FROM essay WHERE essay_id = #{essay_id}
     </select>
+
+    <select id="getEssayList" parameterType="java.lang.Long" resultType="com.future.technology.serverone.essay.domain.Essay">
+        SELECT * FROM essay WHERE essay_id != #{essay_id}
+    </select>
 </mapper>
