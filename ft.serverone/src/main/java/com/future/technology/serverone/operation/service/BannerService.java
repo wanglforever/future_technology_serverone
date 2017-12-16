@@ -33,6 +33,10 @@ public class BannerService implements IBannerService {
             return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_SAVE, BannerStatus.BANNERMSG_S016);
         if (StringUtils.isEmpty(banner.getBanner_name()))
             return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_SAVE, BannerStatus.BANNERMSG_S013);
+        if (StringUtils.isEmpty(banner.getBanner_title()))
+            return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_SAVE, BannerStatus.BANNERMSG_S017);
+        if (StringUtils.isEmpty(banner.getBanner_content()))
+            return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_SAVE, BannerStatus.BANNERMSG_S018);
         if (bannerMapper.queryBannerByTitle(banner.getBanner_name()).size() > 0)
             return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_SAVE, BannerStatus.BANNERMSG_S015);
         banner.setBanner_mktime(GetDateUtil.getDate());
@@ -69,6 +73,10 @@ public class BannerService implements IBannerService {
             return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_EDITOR, BannerStatus.BANNERMSG_E033);
         if(StringUtils.isEmpty(banner.getBanner_name()))
             return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_EDITOR, BannerStatus.BANNERMSG_E035);
+        if (StringUtils.isEmpty(banner.getBanner_title()))
+            return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_SAVE, BannerStatus.BANNERMSG_S017);
+        if (StringUtils.isEmpty(banner.getBanner_content()))
+            return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_SAVE, BannerStatus.BANNERMSG_S018);
         Banner bannerprevious = bannerMapper.queryBannerById(banner.getBanner_id());
         List<Banner> banners = bannerMapper.queryBannerByTitle(banner.getBanner_name());
         if(banners!= null && banners.size() >1)

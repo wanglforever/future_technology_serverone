@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 public class Banner {
     private Long banner_id;
     private String banner_name;
+    private String banner_title;
+    private String banner_content;
     private String banner_description;
     private String banner_source;
     private String ref_address;
