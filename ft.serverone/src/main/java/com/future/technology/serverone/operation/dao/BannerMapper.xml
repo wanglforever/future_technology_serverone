@@ -4,8 +4,8 @@
 
     <insert id="saveBanner" parameterType="com.future.technology.serverone.operation.domain.Banner"
             useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO banner(banner_name,banner_description,banner_source,ref_address,bposition_id,bstatus_id,banner_mktime,banner_modtime)
-        VALUES (#{banner_name},#{banner_description},#{banner_source},#{ref_address},#{bposition_id},#{bstatus_id},#{banner_mktime},#{banner_modtime})
+        INSERT INTO banner(banner_name,banner_title,banner_content,banner_description,banner_source,ref_address,bposition_id,bstatus_id,banner_mktime,banner_modtime)
+        VALUES (#{banner_name},#{banner_title},#{banner_content},#{banner_description},#{banner_source},#{ref_address},#{bposition_id},#{bstatus_id},#{banner_mktime},#{banner_modtime})
     </insert>
 
     <delete id="deleteBanner" parameterType="java.lang.Long">
@@ -21,6 +21,8 @@
 
     <update id="editorBanner" parameterType="com.future.technology.serverone.operation.domain.Banner">
         UPDATE banner SET banner_name = #{banner_name},
+        banner_title = #{banner_title},
+        banner_content = #{banner_content},
         banner_description = #{banner_description},
         banner_source = #{banner_source},
         ref_address = #{ref_address},
@@ -40,6 +42,8 @@
             resultType="com.future.technology.serverone.operation.domain.BCustomer">
         SELECT DISTINCT a.banner_id
         , a.banner_name
+        , a.banner_title
+        , a.banner_content
         , a.banner_description
         , a.banner_source
         , a.ref_address
@@ -64,7 +68,48 @@
                 AND a.banner_mktime &lt;= #{bEndTime}
             </if>
         </where>
-        limit ${offset},${offcount}
+        ORDER BY a.banner_mktime DESC limit ${offset},${offcount}
+    </select>
+
+    <select id="queryBannerWithNoCondition" parameterType="com.future.technology.serverone.operation.domain.BQueryInfo"
+            resultType="com.future.technology.serverone.operation.domain.BCustomer">
+        SELECT DISTINCT a.banner_id
+        , a.banner_name
+        , a.banner_title
+        , a.banner_content
+        , a.banner_description
+        , a.banner_source
+        , a.ref_address
+        , b.bposition_name
+        , c.bstatus_name
+        , a.banner_mktime
+        , a.banner_modtime
+        FROM banner a
+        LEFT OUTER JOIN bpositiondir b ON a.bposition_id = b.bposition_id
+        LEFT OUTER JOIN bstatusdir c ON a.bstatus_id = c.bstatus_id
+        ORDER BY a.banner_mktime DESC limit ${offset},${offcount}
+    </select>
+
+    <select id="queryBannerCount" parameterType="com.future.technology.serverone.operation.domain.BQueryInfo"
+            resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM banner a
+        LEFT OUTER JOIN bpositiondir b ON a.bposition_id = b.bposition_id
+        LEFT OUTER JOIN bstatusdir c ON a.bstatus_id = c.bstatus_id
+        <where>
+            <if test="bTitle != null and bTitle != ''">
+                AND a.banner_name = #{bTitle}
+            </if>
+            <if test="bStatus != null and bStatus != ''">
+                AND a.bstatus_id = #{bStatus}
+            </if>
+            <if test=" bStartTime != null and bStartTime !=''">
+                AND a.banner_mktime >= #{bStartTime}
+            </if>
+            <if test="bEndTime != null and bEndTime != ''">
+                AND a.banner_mktime &lt;= #{bEndTime}
+            </if>
+        </where>
     </select>
 
     <select id="queryBannerByTitle" parameterType="java.lang.String" resultType="com.future.technology.serverone.operation.domain.Banner">
@@ -72,5 +117,9 @@
     </select>
     <select id="queryBannerById" parameterType="java.lang.Long" resultType="com.future.technology.serverone.operation.domain.Banner">
         SELECT * FROM banner WHERE banner_id = #{banner_id}
+    </select>
+
+    <select id="queryOtherBanners" parameterType="java.lang.Long" resultType="com.future.technology.serverone.operation.domain.Banner">
+        SELECT * FROM  banner WHERE banner_id != #{banner_id}
     </select>
 </mapper>

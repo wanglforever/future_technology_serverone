@@ -14,7 +14,9 @@ public interface BannerStatus {
 
     public static final String BANNERMSG_S011 = "保存成功";
     public static final String BANNERMSG_S012 = "保存失败";
-    public static final String BANNERMSG_S013 = "标题为空";
+    public static final String BANNERMSG_S017 = "名字为空";
+    public static final String BANNERMSG_S018 = "标题为空";
+    public static final String BANNERMSG_S013 = "内容为空";
     public static final String BANNERMSG_S015 = "已经存在";
     public static final String BANNERMSG_S014 = "保存出错";
     public static final String BANNERMSG_S016 = "banner为空";

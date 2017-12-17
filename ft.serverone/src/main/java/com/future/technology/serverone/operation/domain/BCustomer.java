@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class BCustomer extends Banner {
-    private String position_name;
+    private String bposition_name;
     private String bstatus_name;
 }

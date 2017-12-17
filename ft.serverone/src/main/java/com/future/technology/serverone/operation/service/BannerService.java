@@ -33,6 +33,10 @@ public class BannerService implements IBannerService {
             return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_SAVE, BannerStatus.BANNERMSG_S016);
         if (StringUtils.isEmpty(banner.getBanner_name()))
             return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_SAVE, BannerStatus.BANNERMSG_S013);
+        if (StringUtils.isEmpty(banner.getBanner_title()))
+            return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_SAVE, BannerStatus.BANNERMSG_S017);
+        if (StringUtils.isEmpty(banner.getBanner_content()))
+            return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_SAVE, BannerStatus.BANNERMSG_S018);
         if (bannerMapper.queryBannerByTitle(banner.getBanner_name()).size() > 0)
             return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_SAVE, BannerStatus.BANNERMSG_S015);
         banner.setBanner_mktime(GetDateUtil.getDate());
@@ -69,10 +73,17 @@ public class BannerService implements IBannerService {
             return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_EDITOR, BannerStatus.BANNERMSG_E033);
         if(StringUtils.isEmpty(banner.getBanner_name()))
             return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_EDITOR, BannerStatus.BANNERMSG_E035);
+        if (StringUtils.isEmpty(banner.getBanner_title()))
+            return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_SAVE, BannerStatus.BANNERMSG_S017);
+        if (StringUtils.isEmpty(banner.getBanner_content()))
+            return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_SAVE, BannerStatus.BANNERMSG_S018);
         Banner bannerprevious = bannerMapper.queryBannerById(banner.getBanner_id());
-        List<Banner> banners = bannerMapper.queryBannerByTitle(banner.getBanner_name());
-        if(banners!= null && banners.size() >1)
-            return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_EDITOR, BannerStatus.BANNERMSG_S015);
+        List<Banner> banners = bannerMapper.queryOtherBanners(banner.getBanner_id());
+        for (int i = 0; i < banners.size(); i++) {
+            Banner otherBanner =  banners.get(i);
+            if(otherBanner.getBanner_name() == banner.getBanner_name())
+                return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_EDITOR, BannerStatus.BANNERMSG_S015);
+        }
         banner.setBanner_modtime(GetDateUtil.getDate());
         banner.setBanner_mktime(bannerprevious.getBanner_mktime());
         int record = bannerMapper.editorBanner(banner);
@@ -108,16 +119,20 @@ public class BannerService implements IBannerService {
         if (bQueryInfo == null)
             return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_QUERY, BannerStatus.BANNERMSG_Q045);
         PageBean<BCustomer> pageBean = new PageBean<>();
-        bQueryInfo.setOffset((pageBean.getCurrentPage()-1) * pageBean.getCurrentCount() * 1l);
+        bQueryInfo.setOffset((bQueryInfo.getCurrentPage()-1) * pageBean.getCurrentCount() * 1l);
         bQueryInfo.setOffcount(pageBean.getCurrentCount() * 1l);
         pageBean.setCurrentPage(bQueryInfo.getCurrentPage());
-        List<BCustomer> records = bannerMapper.queryBanner(bQueryInfo);
+        List<BCustomer> records = bannerMapper.queryBannerWithNoCondition(bQueryInfo);
         if(records == null)
             return new Response<PageBean>(ResponseStatus.FAIL, BannerStatus.BANNERCOD_QUERY, BannerStatus.BANNERMSG_Q042);
-        if (records.size() > 0){
+        if(records.size() ==0){
+            return new Response<PageBean>(ResponseStatus.FAIL, BannerStatus.BANNERCOD_QUERY, BannerStatus.BANNERMSG_Q043,null);
+        }else {
+            Integer totalCount = bannerMapper.queryBannerCount(bQueryInfo);
+            pageBean.setTotalCount(totalCount);
+            pageBean.setTotalPage((int) Math.ceil(totalCount * 1.0 / pageBean.getCurrentCount()));
             pageBean.setInfoList(records);
             return new Response<PageBean>(ResponseStatus.SUCCESS, BannerStatus.BANNERCOD_QUERY, BannerStatus.BANNERMSG_Q041, pageBean);
         }
-        return new Response<PageBean>(ResponseStatus.FAIL, BannerStatus.BANNERCOD_QUERY, BannerStatus.BANNERMSG_Q043,null);
     }
 }

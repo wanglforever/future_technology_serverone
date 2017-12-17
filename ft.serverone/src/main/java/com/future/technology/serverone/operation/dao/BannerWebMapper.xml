@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.future.technology.serverone.operation.dao.BannerWebMapper">
+    <select id="getBannerList" resultType="com.future.technology.serverone.operation.domain.BCustomer">
+        SELECT DISTINCT a.banner_id
+        , a.banner_name
+        , a.banner_title
+        , a.banner_content
+        , a.banner_description
+        , a.banner_source
+        , a.ref_address
+        , b.bposition_name
+        , a.banner_mktime
+        FROM banner a
+        LEFT OUTER JOIN bpositiondir b ON a.bposition_id = b.bposition_id
+        LEFT OUTER JOIN bstatusdir c ON a.bstatus_id = c.bstatus_id
+        WHERE c.bstatus_id = 0
+        ORDER BY a.banner_mktime DESC
+    </select>
+</mapper>

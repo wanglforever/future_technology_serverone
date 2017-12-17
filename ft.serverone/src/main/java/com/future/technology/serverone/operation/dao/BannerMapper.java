@@ -25,4 +25,10 @@ public interface BannerMapper {
     int editorBannerLine(Banner banner);
 
     List<BCustomer> queryBanner(BQueryInfo bQueryInfo);
+
+    List<Banner> queryOtherBanners(Long banner_id);
+
+    Integer queryBannerCount(BQueryInfo bQueryInfo);
+
+    List<BCustomer> queryBannerWithNoCondition(BQueryInfo bQueryInfo);
 }
