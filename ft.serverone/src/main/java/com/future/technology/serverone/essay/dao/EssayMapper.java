@@ -28,4 +28,8 @@ public interface EssayMapper {
     Essay queryEssayById(Long essay_id);
 
     List<Essay> getEssayList(Long essay_id);
+
+    List<EssayCustomer> queryEssayList(QueryInfo queryInfo);
+
+    Integer queryEssayCount(QueryInfo queryInfo);
 }

@@ -10,6 +10,7 @@
         LEFT OUTER JOIN catogorydir b ON a.catogory_id = b.catogory_id
         LEFT OUTER JOIN statusdir   c ON a.status_id   = c.status_id
         WHERE c.status_id = 0
+        ORDER BY a.essay_mktime DESC
     </select>
 
     <select id="getEssayDetail" parameterType="java.lang.Long" resultType="com.future.technology.serverone.essay.domain.EssayCustomer">

@@ -119,16 +119,20 @@ public class BannerService implements IBannerService {
         if (bQueryInfo == null)
             return new Response(ResponseStatus.FAIL, BannerStatus.BANNERCOD_QUERY, BannerStatus.BANNERMSG_Q045);
         PageBean<BCustomer> pageBean = new PageBean<>();
-        bQueryInfo.setOffset((pageBean.getCurrentPage()-1) * pageBean.getCurrentCount() * 1l);
+        bQueryInfo.setOffset((bQueryInfo.getCurrentPage()-1) * pageBean.getCurrentCount() * 1l);
         bQueryInfo.setOffcount(pageBean.getCurrentCount() * 1l);
         pageBean.setCurrentPage(bQueryInfo.getCurrentPage());
-        List<BCustomer> records = bannerMapper.queryBanner(bQueryInfo);
+        List<BCustomer> records = bannerMapper.queryBannerWithNoCondition(bQueryInfo);
         if(records == null)
             return new Response<PageBean>(ResponseStatus.FAIL, BannerStatus.BANNERCOD_QUERY, BannerStatus.BANNERMSG_Q042);
-        if (records.size() > 0){
+        if(records.size() ==0){
+            return new Response<PageBean>(ResponseStatus.FAIL, BannerStatus.BANNERCOD_QUERY, BannerStatus.BANNERMSG_Q043,null);
+        }else {
+            Integer totalCount = bannerMapper.queryBannerCount(bQueryInfo);
+            pageBean.setTotalCount(totalCount);
+            pageBean.setTotalPage((int) Math.ceil(totalCount * 1.0 / pageBean.getCurrentCount()));
             pageBean.setInfoList(records);
             return new Response<PageBean>(ResponseStatus.SUCCESS, BannerStatus.BANNERCOD_QUERY, BannerStatus.BANNERMSG_Q041, pageBean);
         }
-        return new Response<PageBean>(ResponseStatus.FAIL, BannerStatus.BANNERCOD_QUERY, BannerStatus.BANNERMSG_Q043,null);
     }
 }

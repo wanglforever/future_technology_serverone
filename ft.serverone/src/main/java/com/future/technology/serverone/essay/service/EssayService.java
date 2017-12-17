@@ -162,18 +162,17 @@ public class EssayService implements IEssayService {
         if (queryInfo != null) {
             try {
                 PageBean<EssayCustomer> pageBean = new PageBean();
-                queryInfo.setOffset((pageBean.getCurrentPage()-1) * pageBean.getCurrentCount() * 1l);
-                queryInfo.setOffcount(pageBean.getCurrentCount() * 1l);
+                queryInfo.setOffcount((queryInfo.getCurrentPage()-1) * queryInfo.getOffcount());
                 List<EssayCustomer> essays = essayMapper.queryEssay(queryInfo);
-
-                if (essays != null &&essays.size() > 0) {
+                if(essays == null || essays.size() ==0)
+                    return new Response<>(ResponseStatus.FAIL, EssayStatus.ESSAYCOD_400, EssayStatus.ESSAYMES_402);
+                else {
+                    Integer totalCount = essayMapper.queryEssayCount(queryInfo);
                     pageBean.setCurrentPage(queryInfo.getCurrentPage());
-                    pageBean.setTotalCount(essays.size());
-                    pageBean.setTotalPage((int) Math.ceil(essays.size() * 1.0 / pageBean.getCurrentCount()));
+                    pageBean.setTotalCount(totalCount);
+                    pageBean.setTotalPage((int) Math.ceil(totalCount * 1.0 / pageBean.getCurrentCount()));
                     pageBean.setInfoList(essays);
                     return new Response<PageBean>(ResponseStatus.SUCCESS,EssayStatus.ESSAYCOD_400,EssayStatus.ESSAYMES_401,pageBean);
-                } else {
-                    return new Response<>(ResponseStatus.FAIL, EssayStatus.ESSAYCOD_400, EssayStatus.ESSAYMES_402);
                 }
             } catch (Exception excp) {
                 log.error("erro,{}",excp);

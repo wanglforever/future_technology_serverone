@@ -14,6 +14,7 @@
         FROM banner a
         LEFT OUTER JOIN bpositiondir b ON a.bposition_id = b.bposition_id
         LEFT OUTER JOIN bstatusdir c ON a.bstatus_id = c.bstatus_id
-        WHERE c.bstatus_id = 0;
+        WHERE c.bstatus_id = 0
+        ORDER BY a.banner_mktime DESC
     </select>
 </mapper>
