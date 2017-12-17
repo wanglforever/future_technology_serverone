@@ -107,14 +107,10 @@ public class EssayService implements IEssayService {
                 essay.getEssay_content() != null && !essay.getEssay_content().trim().equals("")) {
             try {
                 String date = GetDateUtil.getDate();
-                Essay essayprevious = essayMapper.queryEssayById(essay.getEssay_id());
-                List<Essay> essayList = essayMapper.getEssayList(essayprevious.getEssay_id());
-                for (int i = 0; i < essayList.size(); i++) {
-                    Essay otherEssay =  essayList.get(i);
-                    if (otherEssay.getEssay_title() == essay.getEssay_title())
-                        return new Response(ResponseStatus.FAIL,EssayStatus.ESSAYCOD_300,EssayStatus.ESSAYMES_105);
+
+                if(essayMapper.hasDuplicateName(essay) > 0){
+                    return new Response(ResponseStatus.FAIL,EssayStatus.ESSAYCOD_300,EssayStatus.ESSAYMES_105);
                 }
-                essay.setEssay_mktime(essayprevious.getEssay_mktime());
                 essay.setEssay_modtime(date);
                 if (0 < essayMapper.editorEssay(essay)) {
                     return new Response(ResponseStatus.SUCCESS, EssayStatus.ESSAYCOD_300, EssayStatus.ESSAYMES_301);
@@ -161,7 +157,7 @@ public class EssayService implements IEssayService {
         if (queryInfo != null) {
             try {
                 PageBean<EssayCustomer> pageBean = new PageBean();
-                queryInfo.setOffcount((queryInfo.getCurrentPage()-1) * queryInfo.getOffcount());
+                queryInfo.setOffset((queryInfo.getCurrentPage()-1) * queryInfo.getOffcount());
                 List<EssayCustomer> essays = essayMapper.queryEssay(queryInfo);
                 if(essays == null || essays.size() ==0)
                     return new Response<>(ResponseStatus.FAIL, EssayStatus.ESSAYCOD_400, EssayStatus.ESSAYMES_402);

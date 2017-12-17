@@ -3,6 +3,7 @@ package com.future.technology.serverone.essay.dao;
 import com.future.technology.serverone.essay.domain.Essay;
 import com.future.technology.serverone.essay.domain.EssayCustomer;
 import com.future.technology.serverone.essay.domain.QueryInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -32,4 +33,6 @@ public interface EssayMapper {
     List<EssayCustomer> queryEssayList(QueryInfo queryInfo);
 
     Integer queryEssayCount(QueryInfo queryInfo);
+
+    int hasDuplicateName(@Param("essay") Essay essay);
 }

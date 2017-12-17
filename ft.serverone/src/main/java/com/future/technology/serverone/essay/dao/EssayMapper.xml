@@ -105,4 +105,10 @@
     <select id="getEssayList" parameterType="java.lang.Long" resultType="com.future.technology.serverone.essay.domain.Essay">
         SELECT * FROM essay WHERE essay_id != #{essay_id}
     </select>
+
+    <select id="hasDuplicateName" resultType="int">
+        SELECT count(*)
+        FROM essay
+        WHERE essay_id != #{essay.essay_id} AND essay_title = #{essay.essay_title}
+    </select>
 </mapper>
