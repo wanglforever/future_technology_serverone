@@ -16,10 +16,12 @@ import java.io.IOException;
  */
 @Service
 @Slf4j
-@Transactional
 public class BannerUploadService implements IBannerUploadService {
     @Value("${operation.sourceLocation}")
     private String sourceLocation;
+    @Value("${operation.requestUrl:'http://localhost:8880/sources/'}")
+    private String rootURL;
+
     @Override
     public BSouceBean imgUpload(MultipartFile[] fileArray) {
         if (fileArray == null )
@@ -40,7 +42,7 @@ public class BannerUploadService implements IBannerUploadService {
             }
             try {
                 file.transferTo(dest);
-                bSouceBean.getData().add(path);
+                bSouceBean.getData().add(rootURL+fileName);
             } catch (IllegalStateException e) {
                 log.error("erro,{}",e);
                 bSouceBean.setErrno(1);

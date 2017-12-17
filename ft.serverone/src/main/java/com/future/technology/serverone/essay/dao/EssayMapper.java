@@ -26,4 +26,6 @@ public interface EssayMapper {
     List<EssayCustomer> queryEssay(QueryInfo queryInfo);
 
     Essay queryEssayById(Long essay_id);
+
+    int queryAllCount(QueryInfo queryInfo);
 }

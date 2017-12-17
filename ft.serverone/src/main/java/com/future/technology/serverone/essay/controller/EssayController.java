@@ -30,7 +30,7 @@ public class EssayController {
     }
 
     // 批量删除文章
-    @DeleteMapping(value = "/essay/bathDelete", produces = "application/json; charset=utf-8")
+    @DeleteMapping(value = "/essay/batchDelete", produces = "application/json; charset=utf-8")
     public Response batchDeleteEssay(@RequestParam List<Long> idList) {
         return essayService.batchDeleteEssay(idList);
     }

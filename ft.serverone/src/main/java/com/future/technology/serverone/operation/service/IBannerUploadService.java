@@ -7,5 +7,5 @@ import org.springframework.web.multipart.MultipartFile;
  * Created by three on 2017/12/5.
  */
 public interface IBannerUploadService {
-    public BSouceBean imgUpload(MultipartFile[] file);
+    BSouceBean imgUpload(MultipartFile[] file);
 }

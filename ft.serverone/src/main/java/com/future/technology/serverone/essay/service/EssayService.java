@@ -22,7 +22,6 @@ import java.util.List;
  */
 @Service
 @Slf4j
-@Transactional
 public class EssayService implements IEssayService {
 
     @Autowired
@@ -156,14 +155,14 @@ public class EssayService implements IEssayService {
         if (queryInfo != null) {
             try {
                 PageBean<EssayCustomer> pageBean = new PageBean();
-                queryInfo.setOffset((pageBean.getCurrentPage()-1) * pageBean.getCurrentCount() * 1l);
+                queryInfo.setOffset((queryInfo.getCurrentPage()-1) * pageBean.getCurrentCount() * 1l);
                 queryInfo.setOffcount(pageBean.getCurrentCount() * 1l);
                 List<EssayCustomer> essays = essayMapper.queryEssay(queryInfo);
-
+                int count = essayMapper.queryAllCount(queryInfo);
                 if (essays != null &&essays.size() > 0) {
                     pageBean.setCurrentPage(queryInfo.getCurrentPage());
-                    pageBean.setTotalCount(essays.size());
-                    pageBean.setTotalPage((int) Math.ceil(essays.size() * 1.0 / pageBean.getCurrentCount()));
+                    pageBean.setTotalCount(count);
+                    pageBean.setTotalPage((int) Math.ceil(count * 1.0 / pageBean.getCurrentCount()));
                     pageBean.setInfoList(essays);
                     return new Response<PageBean>(ResponseStatus.SUCCESS,EssayStatus.ESSAYCOD_400,EssayStatus.ESSAYMES_401,pageBean);
                 } else {
