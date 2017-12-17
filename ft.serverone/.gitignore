@@ -1,10 +1,6 @@
 /.mvn/
-/.settings/
 /target/
-/.classpath
-/.project
 /mvnw
 /mvnw.cmd
 /ft.serverone.iml
-log/
-/.idea
+/.idea/

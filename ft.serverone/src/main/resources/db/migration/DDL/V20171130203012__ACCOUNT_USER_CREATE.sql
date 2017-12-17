@@ -13,5 +13,6 @@ CREATE TABLE account_user(
 `accountEmail`       VARCHAR (50)  NULL           COMMENT '用户邮箱',
 `accountQQNum`       VARCHAR (30)  NULL           COMMENT '用户QQ号',
 `accountPhone`       VARCHAR (30)  NULL           COMMENT '用户手机号',
+`accountRole`        VARCHAR (30)                 COMMENT '用户角色',
 PRIMARY KEY (`id`)
 )DEFAULT CHARSET = utf8 COMMENT = 'udbs用户表';

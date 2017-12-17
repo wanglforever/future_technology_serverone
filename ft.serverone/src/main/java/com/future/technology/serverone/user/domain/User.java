@@ -1,10 +1,14 @@
 package com.future.technology.serverone.user.domain;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 
+@Setter
+@Getter
 public class User implements UserDetails {
     /**
      * 主键Id
@@ -25,6 +29,60 @@ public class User implements UserDetails {
      * 用户账号
      */
     private String username;
+    /**
+     * 用户权限
+     */
+    private String accountRole;
+
+    /**
+     * 用户性别
+     */
+    private String accountSex;
+
+    /**
+     * 用户出生日期
+     */
+    private String accountBirthday;
+
+    /**
+     * 用户毕业院校
+     */
+    private String accountGraduatedSchool;
+
+    /**
+     * 用户专业
+     */
+    private String accountProfession;
+
+    /**
+     * 用户毕业时间
+     */
+    private String accountGraduatedTime;
+
+    /**
+     * 用户学历
+     */
+    private String accountEducation;
+
+    /**
+     * 用户地址
+     */
+    private String accountAddress;
+
+    /**
+     * 用户邮箱
+     */
+    private String accountEmail;
+
+    /**
+     * 用户QQ号
+     */
+    private String accountQQNum;
+
+    /**
+     * 用户手机号
+     */
+    private String accountPhone;
 
     /**
      * 是否可用
@@ -47,18 +105,6 @@ public class User implements UserDetails {
      * 权限
      */
     private ArrayList<SimpleGrantedAuthority> authorities;
-    /**
-     * 角色Id
-     */
-    private int roleId;
-
-    public int getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
-    }
 
     public int getId() {
         return id;
@@ -138,7 +184,11 @@ public class User implements UserDetails {
         this.authorities = authorities;
     }
 
-    public boolean isSysAdmin(){
-        return !authorities.isEmpty() && "ROLE_SYS_ADMIN".equals(authorities.get(0).toString());
+    public String getAccountRole() {
+        return accountRole;
+    }
+
+    public void setAccountRole(String accountRole) {
+        this.accountRole = accountRole;
     }
 }

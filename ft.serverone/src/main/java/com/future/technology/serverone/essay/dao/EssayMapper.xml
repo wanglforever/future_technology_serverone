@@ -39,8 +39,11 @@
         SELECT DISTINCT a.essay_id
             , a.essay_title
             , b.catogory_name
+            , a.catogory_id
+            , a.status_id
             , c.status_name
             , a.essay_mktime
+            , a.essay_modtime
             , a.essay_content
         FROM essay a
         LEFT OUTER JOIN catogorydir b ON a.catogory_id = b.catogory_id
@@ -53,7 +56,7 @@
                 AND a.status_id = #{status_id}
             </if>
             <if test="essay_title != null and essay_title !=''">
-                AND a.essay_title LIKE CONCAT('%',#{essay_title},'%')
+                AND a.essay_title LIKE concat('%',#{essay_title},'%')
             </if>
             <if test="start_time != null and start_time !=''">
                 AND a.essay_mktime >= #{start_time}
@@ -62,7 +65,8 @@
                 AND a.essay_mktime &lt;= #{end_time}
             </if>
         </where>
-        ORDER BY a.essay_mktime DESC limit ${offset},${offcount}
+        ORDER BY a.status_id ASC,a.essay_modtime DESC
+        limit ${offset},${offcount}
     </select>
 
     <select id="queryEssayCount" parameterType="com.future.technology.serverone.essay.domain.QueryInfo"

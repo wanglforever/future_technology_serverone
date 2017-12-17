@@ -16,11 +16,13 @@ import java.io.IOException;
  */
 @Service
 @Slf4j
-@Transactional
 public class PictureService implements IPictureService {
 
     @Value("${essay.pictureLocation}")
     private String pictureLocation;
+    @Value("${essay.requestUrl:'http://localhost:8880/picture/'}")
+    private String rootURL;
+
     @Override
     public PictureBean imgUpload(MultipartFile[] fileArray) {
         if (fileArray == null )
@@ -41,7 +43,7 @@ public class PictureService implements IPictureService {
             }
             try {
                 file.transferTo(dest);
-                pictureBean.getData().add(pictureLocation + fileName);
+                pictureBean.getData().add(rootURL + fileName);
             } catch (IllegalStateException e) {
                 log.error("erro,{}",e);
                 pictureBean.setErrno(1);

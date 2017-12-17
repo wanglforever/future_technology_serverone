@@ -22,7 +22,6 @@ import java.util.List;
  */
 @Service
 @Slf4j
-@Transactional
 public class EssayService implements IEssayService {
 
     @Autowired

@@ -10,9 +10,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,13 +39,17 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Username not found.");
         }
 
+
         //加密过程在这里体现
-        if (!password.equals(user.getPassword())) {
+        if (!MD5Util.encode(password).equals(user.getPassword())) {
             throw new BadCredentialsException("Wrong password.");
         }
 
-        Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
-        return new UsernamePasswordAuthenticationToken(user, password, authorities);
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getAccountRole());
+        ArrayList<SimpleGrantedAuthority> authorities = new ArrayList();
+        authorities.add(authority);
+        user.setAuthorities(authorities);
+        return new UsernamePasswordAuthenticationToken(user, password, user.getAuthorities());
     }
 
     @Override
