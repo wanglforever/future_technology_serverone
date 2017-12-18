@@ -5,6 +5,8 @@ import com.future.technology.serverone.operation.domain.BQueryInfo;
 import com.future.technology.serverone.operation.domain.Banner;
 import com.future.technology.serverone.operation.service.IBannerService;
 import com.future.technology.serverone.utils.PageBean;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +15,13 @@ import java.util.List;
 /**
  * Created by three on 2017/12/5.
  */
+@Api("后台管理系统banner模块")
 @RestController
 public class BannerController {
     @Autowired
     private IBannerService bannerService;
 
+    @ApiOperation("保存banner")
     @PostMapping("/banner/save")
     public Response saveBanner(@RequestBody Banner banner) {
         return bannerService.saveBanner(banner);
