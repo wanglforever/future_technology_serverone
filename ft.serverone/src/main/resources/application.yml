@@ -22,11 +22,13 @@ spring:
       poolPreparedStatements: true
       useGlobalDataSourceStat: true
 essay:
-  pictureLocation: D:\picture\
+  pictureLocation: D:\udbs\picture\
   requestUrl: http://localhost:8880/picture/
 operation:
-  sourceLocation: D:\sources\
+  sourceLocation: D:\udbs\sources\
+  tmpUrl: D:\udbs\tmp\sources\
   requestUrl: http://localhost:8880/sources/
 flyway:
   out-of-order: true
+
 
