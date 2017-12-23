@@ -2,27 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.future.technology.serverone.essay.dao.EssayWebMapper">
     <select id="getEssayList" resultType="com.future.technology.serverone.essay.domain.EssayCustomer">
-        SELECT DISTINCT a.essay_id
-            , a.essay_title
-            , b.catogory_name
-            , a.essay_mktime
-        FROM essay a
-        LEFT OUTER JOIN catogorydir b ON a.catogory_id = b.catogory_id
-        LEFT OUTER JOIN statusdir   c ON a.status_id   = c.status_id
-        WHERE c.status_id = 0
-        ORDER BY a.essay_mktime DESC
+        SELECT
+        essay_title,
+        catogory_id,
+        essay_modtime
+        FROM `essay`
+        ORDER BY essay_mktime DESC
     </select>
 
     <select id="getEssayDetail" parameterType="java.lang.Long" resultType="com.future.technology.serverone.essay.domain.EssayCustomer">
-        SELECT DISTINCT a.essay_id
-            , a.essay_title
-            , b.catogory_name
-            , c.status_name
-            , a.essay_mktime
-            , a.essay_content
-        FROM essay a
-        LEFT OUTER JOIN catogorydir b ON a.catogory_id = b.catogory_id
-        LEFT OUTER JOIN statusdir   c ON a.status_id   = c.status_id
-        WHERE a.essay_id = #{id}
+        SELECT
+        a.*
+        , b.catogory_name
+        , c.status_name
+        FROM(SELECT
+        essay_title
+        , essay_mktime
+        , essay_content
+        , catogory_id
+        , status_id
+        FROM essay
+        WHERE essay_id = #{id}) a
+        LEFT JOIN catogorydir b ON a.catogory_id = b.catogory_id
+        LEFT JOIN statusdir   c ON a.status_id   = c.status_id
     </select>
 </mapper>

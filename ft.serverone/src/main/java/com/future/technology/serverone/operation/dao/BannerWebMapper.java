@@ -9,5 +9,5 @@ import java.util.List;
  * Created by three on 2017/12/16.
  */
 public interface BannerWebMapper {
-    List<BCustomer> getBannerList();
+    List<Banner> getBannerList();
 }

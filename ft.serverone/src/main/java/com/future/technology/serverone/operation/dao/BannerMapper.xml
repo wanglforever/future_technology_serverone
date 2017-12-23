@@ -84,6 +84,7 @@
         , c.bstatus_name
         , a.banner_mktime
         , a.banner_modtime
+        , a.bstatus_id
         FROM banner a
         LEFT OUTER JOIN bpositiondir b ON a.bposition_id = b.bposition_id
         LEFT OUTER JOIN bstatusdir c ON a.bstatus_id = c.bstatus_id

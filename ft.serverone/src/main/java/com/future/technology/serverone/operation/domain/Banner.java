@@ -16,8 +16,8 @@ public class Banner {
     private String banner_description;
     private String banner_source;
     private String ref_address;
-    private Integer bposition_id = 0;
-    private Integer bstatus_id = 0;
+    private Integer bposition_id;
+    private Integer bstatus_id;
     private String banner_mktime;
     private String banner_modtime;
 }

@@ -34,8 +34,6 @@ public class PictureService implements IPictureService {
         for (int i = 0; i < fileArray.length; i++) {
             MultipartFile file =  fileArray[i];
             String fileName = file.getOriginalFilename();
-            // 命名格式20171204152038_img.png
-            fileName = GetDateUtil.suffixDateFormat()+ "_" + fileName;
             File dest = new File(pictureLocation + fileName);
             // 检测是否存在目录
             if (!dest.getParentFile().exists()) {

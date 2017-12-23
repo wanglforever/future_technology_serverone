@@ -4,8 +4,16 @@
 
     <insert id="saveEssay" parameterType="com.future.technology.serverone.essay.domain.Essay"
             useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO essay(essay_title,catogory_id,status_id,essay_mktime,essay_modtime,essay_content)
-                VALUES (#{essay_title},#{catogory_id},#{status_id},#{essay_mktime},#{essay_modtime},#{essay_content})
+        INSERT INTO essay
+        (essay_title,catogory_id,status_id,essay_mktime,essay_modtime,essay_content,essay_preview)
+        VALUES
+        (#{essay_title},
+        #{catogory_id},
+        #{status_id},
+        #{essay_mktime},
+        #{essay_modtime},
+        #{essay_content},
+        #{essay_preview})
     </insert>
 
     <delete id="deletEssay" parameterType="java.lang.Long">
@@ -24,7 +32,8 @@
                           catogory_id = #{catogory_id},
                           status_id = #{status_id},
                           essay_modtime = #{essay_modtime},
-                          essay_content = #{essay_content}
+                          essay_content = #{essay_content},
+                          essay_preview = #{essay_preview}
         WHERE essay_id = #{essay_id}
     </update>
 

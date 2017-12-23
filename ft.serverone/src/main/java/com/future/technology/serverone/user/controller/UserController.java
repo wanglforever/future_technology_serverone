@@ -25,6 +25,7 @@ public class UserController {
         return userService.userLogin();
     }
 
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
     public Response addAccount(@RequestBody User user){
         return userService.addAccount(user);
     }

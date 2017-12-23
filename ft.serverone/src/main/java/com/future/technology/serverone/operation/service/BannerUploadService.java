@@ -32,8 +32,6 @@ public class BannerUploadService implements IBannerUploadService {
         for (int i = 0; i < fileArray.length; i++) {
             MultipartFile file =  fileArray[i];
             String fileName = file.getOriginalFilename();
-            // 命名格式20171204152038_img.png
-            fileName = GetDateUtil.suffixDateFormat()+ "_" + fileName;
             String path = sourceLocation + fileName;
             File dest = new File(path);
             // 检测是否存在目录
